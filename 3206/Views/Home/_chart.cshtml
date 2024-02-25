@@ -1,0 +1,162 @@
+﻿@model _3206.ViewModels.DashboardViewModel;
+@{
+    var m = Model;
+}
+@if (Model != null)
+{
+    <input type="hidden" id="typedata" value="@Model.TypeChart" />
+    <input type="hidden" id="storedata" value="@Model.StoreChart" />
+    <input type="hidden" id="piedata" value="@Model.PieChart" />
+    <input type="hidden" id="visitdata" value="@Model.VisitCount" />
+}
+
+<div class="row">
+    <div class="col-md-12 col-xl-8">
+        <div class="row">
+            <div class="col-md-12 col-xl-6 grid-margin stretch-card">
+                <div class="card">
+                </div>
+            </div>
+            <div class="col-md-12 col-xl-6 grid-margin stretch-card">
+                <div class="card">
+                </div>
+            </div>
+            <div class="col-md-12 col-xl-6 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="typechart">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-xl-6 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="storechart">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-xl-6 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="piechart">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-xl-6 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="visitchart">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6 grid-margin stretch-card average-price-card">
+                <div class="card text-white">
+                    <div class="card-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-lg-12">
+        <div class="row">
+            <div class="col-md-12  grid-margin stretch-card">
+                <div class="card">
+                </div>
+            </div>
+
+            <div class="col-md-12  grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+
+                            @if (Model != null)
+                            {
+                                @foreach (var item in Model.Expenses)
+                                {
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-center pb-2">
+                                            <div class="dot-indicator bg-success mr-2"></div>
+                                            <p class="mb-0">@item.Type</p>
+                                        </div>
+                                        <h4 class="font-weight-semibold">$@item.Cost</h4>
+                                        <div class="progress progress-md">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: @item.percentage%" aria-valuenow="@item.percentage" aria-valuemin="0" aria-valuemax="@item.percentage"></div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <h3 class="card-title ">Budgets</h3>
+
+                            @if (Model != null)
+                            {
+                                @foreach (var item in Model.Spent)
+                                {
+
+                                    var color = "success";
+                                    if (item.IsOverBudget == false)
+                                        color = "success";
+                                    else
+                                        color = "danger";
+
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-center pb-2">
+                                            <div class="dot-indicator bg-@color mr-2"></div>
+                                            <p class="mb-0">@item.Type</p>
+                                        </div>
+
+                                        <h4 class="font-weight-semibold">$ <span class="text-@color">@item.Spent</span>/@item.Budget</h4>
+                                        <div class="progress progress-md">
+                                            <div class="progress-bar bg-@color" role="progressbar" style="width: @item.Percentage%" aria-valuenow="@item.Percentage" aria-valuemin="0" aria-valuemax="@item.Percentage"></div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <h3 class="card-title ">Each Person Should Pay</h3>
+                            @if (Model != null)
+                            {
+                                @foreach (var item in Model.EachPersonShouldPay)
+                                {
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-center pb-2">
+                                            <div class="dot-indicator bg-success mr-2"></div>
+                                            <p class="mb-0">@item.Person</p>
+                                        </div>
+                                        <h4 class="font-weight-semibold">$@item.Amount</h4>
+                                        
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

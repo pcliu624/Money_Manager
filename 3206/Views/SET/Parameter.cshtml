@@ -1,0 +1,95 @@
+﻿@model _3206.ViewModels.ParaViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Parameter";
+    Layout = "_Layout";
+}
+
+<div class="col-lg-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex">
+                <h4 class="card-title mt-2">Parameter</h4>
+                <div class="ml-auto p-2">
+                    <button class="btn btn-success" onclick="InitModal('insert','');">Add+</button>
+                </div>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>
+                            Name
+                        </th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.paralist)
+                    {
+                        <tr>
+                            <td>
+                                <button type="button" class="btn btn-primary" onclick="InitModal('update',@item.Id);"><i class="fa fa-pencil-square-o"></i></button>
+                                <button type="button" class="btn btn-danger" onclick="DeleteItem('delete',@item.Id)"><i class="fa fa-trash-o"></i></button>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<partial name="_EditPara" />
+<script>
+    function InitModal(Method, Id) {
+        if (Id != '') {
+            $.ajax({
+                url: "../SET/EditParameter?id=" + Id,
+                type: "GET",
+                cache: false,
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    $('#modal').modal('show');
+                    $('#name').val(result.name);
+                    $('#category').val(result.category);
+                    $('#Id').val(result.id);
+                },
+                error: function (result) {
+                    console.log(result.responseText);
+                }
+            })
+        }
+        else {
+            $('#name').val('');
+            $('#category').val('');
+            $('#Id').val('');
+            $('#modal').modal('show');
+        }
+    }
+    function DeleteItem(method, Id) {
+        if (confirm("sure?") == true) {
+            if (Id != '') {
+                $.ajax({
+                    url: "../SET/DeleteParameter?id=" + Id,
+                    type: "GET",
+                    cache: false,
+                    contentType: "application/json;charset=UTF-8",
+                    dataType: "json",
+                    success: function (result) {
+                    },
+                    error: function (result) {
+                        console.log(result.responseText);
+                    }
+                })
+            }
+        }
+    }
+</script>

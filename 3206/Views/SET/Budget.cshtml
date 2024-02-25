@@ -1,0 +1,93 @@
+﻿@model _3206.ViewModels.BudgetViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Parameter";
+    Layout = "_Layout";
+}
+
+<div class="col-sm-10 col-xl-4 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex">
+                <h4 class="card-title mt-2">Budget</h4>
+                <div class="ml-auto p-2">
+                    <button class="btn btn-success" onclick="InitModal('insert','');">Add+</button>
+                </div>
+            </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Type</th>
+                            <th>Budget($)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.budgetlist)
+                        {
+                            <tr>
+                                <td>
+                                    <button type="button" class="btn btn-primary" onclick="InitModal('update',@item.Id);"><i class="fa fa-pencil-square-o"></i></button>
+                                    <button type="button" class="btn btn-danger" onclick="DeleteItem('delete',@item.Id)"><i class="fa fa-trash-o"></i></button>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Type)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Budget1)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+        </div>
+    </div>
+</div>
+<partial name="_EditBudget" />
+<script>
+    function InitModal(Method, Id) {
+        if (Id != '') {
+            $.ajax({
+                url: "../SET/EditBudget?id=" + Id,
+                type: "GET",
+                cache: false,
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    $('#modal').modal('show');
+                    $('#type').val(result.type);
+                    $('#budget').val(result.budget1);
+                    $('#Id').val(result.id);
+                },
+                error: function (result) {
+                    console.log(result.responseText);
+                }
+            })
+        }
+        else {
+            $('#type').val('');
+            $('#budget').val('');
+            $('#Id').val('');
+            $('#modal').modal('show');
+        }
+    }
+    function DeleteItem(method, Id) {
+        if (confirm("sure?") == true) {
+            if (Id != '') {
+                $.ajax({
+                    url: "../SET/DeleteBudget?id=" + Id,
+                    type: "GET",
+                    cache: false,
+                    contentType: "application/json;charset=UTF-8",
+                    dataType: "json",
+                    success: function (result) {
+                    },
+                    error: function (result) {
+                        console.log(result.responseText);
+                    }
+                })
+            }
+        }
+    }
+</script>

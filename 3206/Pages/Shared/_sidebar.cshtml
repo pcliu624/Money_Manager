@@ -1,0 +1,38 @@
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+        
+        <li class="nav-item nav-category">Main Menu</li>
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                <i class="menu-icon typcn typcn-document-text"></i>
+                <span class="menu-title">Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-Settings" aria-expanded="false" aria-controls="ui-Settings">
+                <i class="menu-icon typcn typcn-coffee"></i>
+                <span class="menu-title">Settings</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-Settings">
+                <ul class="nav flex-column sub-menu">
+                   @*  <li class="nav-item">
+                        <a class="nav-link" asp-page="">Side Menu</a>
+                    </li> *@
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="SET" asp-action="Parameter">Parameter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="SET" asp-action="Budget">Budget</a>
+                    </li>
+                </ul>
+            </div>
+        </li>       
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Purchase" asp-action="Index">
+                <i class="menu-icon typcn typcn-th-large-outline"></i>
+                <span class="menu-title">Purchase</span>
+            </a>
+        </li> 
+    </ul>
+</nav>

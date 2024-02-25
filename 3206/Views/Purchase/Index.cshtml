@@ -1,0 +1,160 @@
+﻿@model PurchaseViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.AspNetCore.Http.Extensions
+@using _3206.ViewModels
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_Layout";
+    var url = Context.Request.GetEncodedUrl();
+}
+<script type="text/javascript" src="~/js/site/Purchase/purchase.js"></script>
+<style>
+    table {
+        width: 100%;
+        overflow-x: auto;
+        background-color: white
+    }
+
+    .add-new {
+        height: 2.2rem;
+        font-weight: bold;
+        text-shadow: none;
+        line-height: 13px;
+    }
+
+    .hidden {
+        display: none;
+        visibility: hidden;
+    }
+
+    table.table {
+        table-layout: fixed;
+        over-flow: break-word;
+    }
+
+        table.table tr th, table.table tr td {
+            border-color: #e9e9e9;
+        }
+
+        table.table th i {
+            font-size: 13px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        table.table td a {
+            cursor: pointer;
+            min-width: 24px;
+        }
+
+            table.table td a.add {
+                color: #27C46B;
+            }
+
+            table.table td a.edit {
+                color: #FFC107;
+            }
+
+            table.table td a.delete {
+                color: #E34724;
+            }
+
+            table.table td a.add i {
+                font-size: 24px;
+                margin-right: -1px;
+                position: relative;
+                top: 3px;
+            }
+
+        table.table td .add {
+            display: none;
+        }
+  thead th .th-inner{
+      text-overflow:unset !important;
+      overflow-wrap: break-word !important;
+      padding:7px 5px !important;
+      text-align: center;
+      white-space:normal !important;
+  }
+</style>
+<div class="col-sm-12 col-xl-8 grid-margin">
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group row">
+                            <label>Date</label>
+                            <input type="text" id="datepicker" asp-for="Date">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group row">
+                            <label>Pay by</label>
+                            <div class="col-sm-12">
+                                <select id="Payby" asp-for="Person" asp-items="@(new SelectList(Model.PersonList.ToList(), "Text"))" class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group row">
+                            <label>Cost</label>
+                            <input id="Cost" type="number" asp-for="Cost" step=".01" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group row">
+                            <label>Type</label>
+                            <div class="col-sm-12">
+                                <select id="Type" asp-for="Type" asp-items="@(new SelectList(Model.TypeList.ToList(),  "Text"))" class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group row">
+                            <label>Store</label>
+                            <div class="col-sm-12">
+                                <select id="Store" asp-for="Store" asp-items="@(new SelectList(Model.StoreList.ToList(),  "Text"))" class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group row">
+                            <label>Pay for</label>
+                            <div class="col-sm-12">
+                                <select id="Payfor" asp-for="Payfor" asp-items="@(new SelectList(Model.PersonList2.ToList(), "Text"))" class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <input type="submit" class="btn btn-success mt-4" value="+" asp-action="AddPurchaseRecord" />
+@*                         <button id="addproduct_s" class="btn btn-success add-new" style="margin-top:2rem">+</button>
+ *@                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="col-sm-12 col-xl-8 grid-margin">
+    <div class="card">
+        <div class="card-body">
+            <table id="resultS" class="table table-hover" data-method="post" data-url="@url/PurchaseRecord" data-pagination="true"
+                   data-side-pagination="server" data-page-size="25" data-cache="false" data-undefined-text="">
+                <thead>
+                    <tr>
+                        <th data-field="date" data-align="left" data-sortable="true" data-width="18" data-width-unit="%">Date</th>
+                        <th data-field="payby" data-align="left" data-sortable="true">Pay by</th>
+                        <th data-field="cost" data-align="left" data-sortable="true">Cost</th>
+                        <th data-field="type" data-align="left" data-sortable="true" data-width="15" data-width-unit="%">Type</th>
+                        <th data-field="store" data-align="left" data-sortable="true" data-width="15" data-width-unit="%">Store</th>
+                        <th data-field="payfor" data-align="left" data-sortable="true" data-width="20" data-width-unit="%">Pay for</th>
+                        <th data-field="id" data-class="hidden"></th>
+                        <th data-formatter="btnformat"></th>
+                    </tr>
+                </thead>
+            </table>
+            <button id="btnsave" class="btn btn-primary float-right">Save</button>
+
+        </div>
+    </div>
+</div>
