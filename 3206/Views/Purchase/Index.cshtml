@@ -90,7 +90,7 @@
                     </div>
                     <div class="col-md-2">
                         <div class="form-group row">
-                            <label>Pay by</label>
+                            <label>Paid by</label>
                             <div class="col-sm-12">
                                 <select id="Payby" asp-for="Person" asp-items="@(new SelectList(Model.PersonList.ToList(), "Text"))" class="form-control"></select>
                             </div>
@@ -120,7 +120,7 @@
                     </div>
                     <div class="col-md-2">
                         <div class="form-group row">
-                            <label>Pay for</label>
+                            <label>Paid for</label>
                             <div class="col-sm-12">
                                 <select id="Payfor" asp-for="Payfor" asp-items="@(new SelectList(Model.PersonList2.ToList(), "Text"))" class="form-control"></select>
                             </div>

@@ -55,12 +55,7 @@
             </div>
 
 
-            <div class="col-md-6 grid-margin stretch-card average-price-card">
-                <div class="card text-white">
-                    <div class="card-body">
-                    </div>
-                </div>
-            </div>
+           
         </div>
     </div>
     <div class="col-xl-4 col-lg-12">
@@ -141,14 +136,12 @@
                             {
                                 @foreach (var item in Model.EachPersonShouldPay)
                                 {
-                                    <div class="col-md-6">
-                                        <div class="d-flex align-items-center pb-2">
-                                            <div class="dot-indicator bg-success mr-2"></div>
-                                            <p class="mb-0">@item.Person</p>
+                                    <div class="d-flex py-2 border-bottom">
+                                        <div class="wrapper ml-2">
+                                            <p class="mb-n1 font-weight-semibold">@item.Person</p>
+                                            <small>$@item.Amount</small>
                                         </div>
-                                        <h4 class="font-weight-semibold">$@item.Amount</h4>
-                                        
-                                    </div>
+                                    </div>                                   
                                 }
                             }
                         </div>
