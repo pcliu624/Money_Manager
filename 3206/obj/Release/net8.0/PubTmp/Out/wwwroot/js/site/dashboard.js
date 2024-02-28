@@ -12,8 +12,14 @@ $(function () {
     //        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
     //    }
     //}    
+    
     $('#partialChart').load("/Home/ChartPartial");
-    renderchart();
+    var interval = setInterval(function () {
+        if ($('#typedata').val() != undefined) {
+            renderchart();
+            clearInterval(interval);
+        }
+    }, 100); 
 
     $('input[name="daterange"]').daterangepicker({
         opens: 'right',
@@ -30,9 +36,9 @@ $(function () {
         $('#partialChart').load(url);
         renderchart();
     });
+   
 })
 function renderchart() {
-    setTimeout(function () {
 
         var typedata = JSON.parse($('#typedata').val());
         var typechart = new ApexCharts(document.querySelector("#typechart"), typedata);
@@ -49,7 +55,7 @@ function renderchart() {
         var visitdata = JSON.parse($('#visitdata').val());
         var visitchart = new ApexCharts(document.querySelector("#visitchart"), visitdata);
         visitchart.render();
-    }, 400);
+   
 }
 function loadData() {
     $.ajax({
