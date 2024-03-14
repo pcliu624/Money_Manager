@@ -1,0 +1,55 @@
+﻿@model _3206.ViewModels.PersonalViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    var a = Model;
+    Layout = "_Layout";
+}
+<div class="row page-title-header">
+    <div class="col-12">
+        <div class="page-header">
+            <h4 class="page-title">Personal</h4>
+            <div class="quick-link-wrapper w-100 d-md-flex flex-md-wrap">               
+            </div>           
+        </div>       
+    </div>
+    <form method="post">
+        <div class="form-group row">
+            <div class="col-sm-1">
+                <select asp-for="PersonName" asp-items="@(new SelectList(Model.PeopleList.ToList(), "Text"))" class="form-control"></select>
+            </div>
+            <div class="col-sm-2">
+            <div class="page-header-toolbar">
+                <input asp-for="DateRange" class="daterange" type="text" name="daterange" value=" " />
+
+            </div>
+        </div>
+            <div class="col-sm-1">
+                <input type="submit" class="btn btn-success " value="Search" asp-action="Index" />
+            </div>
+        </div>
+    </form>
+</div>
+<partial name="_individual" />
+<script>
+    $(function () {
+        $('input[name="daterange"]').daterangepicker({
+            opens: 'right',
+            "startDate": moment().startOf('month'),
+            "endDate": moment().endOf('month'),
+        }, function (start, end, label) {
+        });
+        // $('#partialChart').load("/Personal/Index");
+        var interval = setInterval(function () {
+            if ($('#typedata').val() !== undefined && $('#typedata').val() !== null && $('#typedata').val()!=='') {
+                renderchart();
+                clearInterval(interval);
+            }
+        }, 500);
+    })  
+    function renderchart() {
+
+        var typedata = JSON.parse($('#typedata').val());
+        var typechart = new ApexCharts(document.querySelector("#typechart"), typedata);
+        typechart.render();      
+    }
+</script>

@@ -19,14 +19,13 @@ $(function () {
             renderchart();
             clearInterval(interval);
         }
-    }, 100); 
+    }, 150); 
 
     $('input[name="daterange"]').daterangepicker({
         opens: 'right',
         "startDate": moment().startOf('month'),
         "endDate": moment().endOf('month'),
     }, function (start, end, label) {
-        console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
     });
     $('input[name="daterange"]').daterangepicker().on('apply.daterangepicker', function (e, picker) {
         var startDate = picker.startDate.format('YYYY-MM-DD');
@@ -34,12 +33,38 @@ $(function () {
         console.log(`startDate = ${startDate}, endDate = ${endDate}`);
         var url = "../Home/ChartPartial?range=" + startDate + "|" + endDate;
         $('#partialChart').load(url);
-        renderchart();
+        var interval = setInterval(function () { // keep try until data loaded
+            if ($('#typedata').val() != undefined) {
+                renderchart();
+                clearInterval(interval);
+            }
+        }, 150); 
     });
    
 })
 function renderchart() {
-
+    //var typedata = {
+    //    "chart": {
+    //        "type": "bar"
+    //    },
+    //    "series": [
+    //        {
+    //            "name": "CAD",
+    //            "data": [
+    //                439.57,
+    //                31.59,
+    //                77.68
+    //            ]
+    //        }
+    //    ],
+    //    "xaxis": {
+    //        "categories": [
+    //            "Grocery",
+    //            "House stuff",
+    //            "Dining"
+    //        ]
+    //    },     
+    //}  
         var typedata = JSON.parse($('#typedata').val());
         var typechart = new ApexCharts(document.querySelector("#typechart"), typedata);
         typechart.render();
@@ -56,18 +81,4 @@ function renderchart() {
         var visitchart = new ApexCharts(document.querySelector("#visitchart"), visitdata);
         visitchart.render();
    
-}
-function loadData() {
-    $.ajax({
-        url: "../Home/ChartPartial?range=" + startDate + "|" + endDate,
-        type: "GET",
-        cache: false,
-        contentType: "application/json;charset=UTF-8",
-        dataType: "json",
-        success: function (result) {
-
-        },
-        error: function (result) {
-        }
-    })
 }

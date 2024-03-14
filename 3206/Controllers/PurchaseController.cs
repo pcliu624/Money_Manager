@@ -68,7 +68,7 @@ namespace _3206.Controllers
                     tmp.Cost = decimal.Parse(item.Cost);
                     tmp.Date = DateTime.Parse(item.Date);
                     tmp.Type = item.Type;
-                    tmp.Payby = tmp.Payby.ToUpper();  
+                    tmp.Payby = item.Payby.ToUpper();  
                     _db.Purchases.Update(tmp);
                 }
             }
