@@ -34,12 +34,35 @@ namespace _3206.Controllers
             return View(vmodel);
         }
         [HttpPost]
-        public async Task<ActionResult> PurchaseRecord()
+        public async Task<ActionResult> PurchaseRecord(PurchaseFilterViewModel filter)
         {
             var result = new JsonResponse<PurchaseRecordViewModel>();
             try
             {
-                result.rows = await _db.Purchases.OrderByDescending(x =>x.Date).Select(x => new PurchaseRecordViewModel
+                var list =  _db.Purchases.AsQueryable();
+                if (filter.Date != null)
+                {
+                    var start = DateTime.Parse(filter.Date.Split('-')[0]);
+                    var end = DateTime.Parse(filter.Date.Split('-')[1]);
+                    list = list.Where(x => x.Date >= start && x.Date <= end);
+                }
+                if (!string.IsNullOrEmpty(filter.Paidby))
+                {
+                    list = list.Where(x =>x.Payby==filter.Paidby);
+                }
+                if(!string.IsNullOrEmpty(filter.Type))
+                {
+                    list = list.Where(x=>x.Type==filter.Type);
+                }
+                if(!string.IsNullOrEmpty(filter.Store))
+                {
+                    list = list.Where(x =>x.Store==filter.Store);
+                }
+                //if (filter.Payfor != null && filter.Payfor.Count>0 )
+                //{
+                //    list = list.Where(x =>filter.Payfor.Contains(x.Payfor));
+                //}
+                result.rows =await list.OrderByDescending(x =>x.Date).Skip(filter.offset.GetValueOrDefault(0)).Take(filter.limit.GetValueOrDefault(25)).Select(x => new PurchaseRecordViewModel
                 {
                     Date = x.Date.HasValue ? x.Date.Value.ToString("yyyy-MM-dd") : "",
                     Payby = x.Payby,
@@ -49,7 +72,7 @@ namespace _3206.Controllers
                     Payfor = x.Payfor ?? "",
                     Id = x.Id.ToString(),
                 }).ToListAsync();
-                result.total = result.rows.Count;
+                result.total = list.Count();
             }
             catch (Exception ex) { Console.WriteLine(ex.ToString()); }
             return Json(result);

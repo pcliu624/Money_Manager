@@ -2,7 +2,15 @@
 let dellist = [];
 $(function () {
     $("#datepicker").datepicker({ dateFormat: 'yy-mm-dd' });
-    BindTableS();
+    $('#datefilter').daterangepicker({
+        opens: 'right',
+        "startDate": moment().startOf('month'),
+        "endDate": moment().endOf('month'),
+    }, function (start, end, label) {
+    });
+    $('#paybyfilter').val('');
+    $('#storefilter').val('');
+    $('#typefilter').val('');
     $('#addproduct_s').click(function () {
         additem_s($(this));
     });
@@ -80,18 +88,30 @@ $(function () {
     $("#btnsave").on('click', function () {
         DataPost();
     });
+    $('#searchbtn').on('click', function () {
+        BindTable();
+    })
+    $('#clearbtn').on('click', function () {
+        $('#datefilter').val('');
+        $('#paybyfilter').val('');
+        $('#storefilter').val('');
+        $('#typefilter').val('');
+    })
+    BindTable();
 });
 
-function BindTableS() {
+function BindTable() {
     $("#resultS").bootstrapTable("destroy");
     var indexOffset = 0;
     $("#resultS").bootstrapTable({
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         queryParams: function (params) {
             jsondata = $.param({
-
-                sort: params.sort,
-                order: params.order,
+                Date: $('#datefilter').val(),
+                Payby: $('#paybyfilter').val(),
+                store: $('#storefilter').val(),
+                Type: $('#typefilter').val(),
+                //Payfor: $('#payforfilter').val(),
                 limit: params.limit,
                 offset: params.offset
             }, true);
@@ -115,27 +135,27 @@ function btnformat(value, row, index) {
         '<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>';
 }
 function DataPost() {
-    let s = $('#resultS tbody tr').length;    
-        var prop = ['Date', 'Payby', "Cost", 'Type', 'Store', 'Payfor', 'Id'];
-        // Retrieve all the rows in the table
-        let formdata = {
-            EditList: editlist,
-            DeleteList: dellist
-        };
-        $.ajax({
-            url: "../Purchase/SavePurchaseRecord",
-            type: "POST",
-            cache: false,
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            data: JSON.stringify(formdata),
-            success: function (result) {
-                window.location.reload();
-                console.log(result);
-            },
-            error: function (result) {
-                console.log(result.responseText);
-            }
-        })
-    
+    let s = $('#resultS tbody tr').length;
+    var prop = ['Date', 'Payby', "Cost", 'Type', 'Store', 'Payfor', 'Id'];
+    // Retrieve all the rows in the table
+    let formdata = {
+        EditList: editlist,
+        DeleteList: dellist
+    };
+    $.ajax({
+        url: "../Purchase/SavePurchaseRecord",
+        type: "POST",
+        cache: false,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        data: JSON.stringify(formdata),
+        success: function (result) {
+            window.location.reload();
+            console.log(result);
+        },
+        error: function (result) {
+            console.log(result.responseText);
+        }
+    })
+
 }
