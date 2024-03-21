@@ -108,7 +108,7 @@ function BindTable() {
         queryParams: function (params) {
             jsondata = $.param({
                 Date: $('#datefilter').val(),
-                Payby: $('#paybyfilter').val(),
+                Paidby: $('#paybyfilter').val(),
                 store: $('#storefilter').val(),
                 Type: $('#typefilter').val(),
                 //Payfor: $('#payforfilter').val(),
