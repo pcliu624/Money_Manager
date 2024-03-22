@@ -51,5 +51,9 @@
         var typedata = JSON.parse($('#typedata').val());
         var typechart = new ApexCharts(document.querySelector("#typechart"), typedata);
         typechart.render();      
+
+        var piedata = JSON.parse($('#piedata').val());
+        var piechart = new ApexCharts(document.querySelector("#piechart"), piedata);
+        piechart.render();
     }
 </script>

@@ -38,6 +38,8 @@ namespace _3206.Controllers
             var datalist = new List<decimal>();
             var Xaxislist1 = new List<string>();
             var slist = new List<SeriesModel>();
+            var labellist = new List<string>();
+            var series = new List<decimal>();
             Dictionary<string, decimal> totalAmount = new Dictionary<string, decimal>();
             foreach (var item in data)
             {
@@ -58,6 +60,8 @@ namespace _3206.Controllers
             {
                 Xaxislist1.Add(amount.Key ?? "");
                 datalist.Add(Math.Round(amount.Value, 2, MidpointRounding.AwayFromZero));
+                labellist.Add(amount.Key ?? "");
+                series.Add(Math.Round(amount.Value, 2, MidpointRounding.AwayFromZero));
             }
             var serie = new SeriesModel()
             {
@@ -71,10 +75,17 @@ namespace _3206.Controllers
             barChartViewModel.xaxis = xaxis;
             barChartViewModel.chart = tmpc;
             barChartViewModel.plotOptions = new OptionModel() { bar = new BarModel() { borderRadius = 4, horizontal = false } };
+
+            var chart = new PieChartViewModel();
+                      
+            chart.chart = new Chartmodel() { type = "donut" };
+            chart.series = series;
+            chart.labels = labellist;
             var reuslt = new PersonalViewModel
             {
                 TypeChart = JsonConvert.SerializeObject(barChartViewModel),
-                PeopleList = _db.Parameters.Where(x => x.Category == "Person").Select(x => x.Name).ToList()
+                PeopleList = _db.Parameters.Where(x => x.Category == "Person").Select(x => x.Name).ToList(),
+                PieChart = JsonConvert.SerializeObject(chart)
             };
             return View(reuslt);
         }

@@ -6,5 +6,7 @@
         public string PersonName { get; set;}
         public string DateRange { get; set; }
         public string TypeChart { get; set; }
+        public string PieChart { get; set; }
+
     }
 }

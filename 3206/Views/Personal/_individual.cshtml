@@ -3,6 +3,7 @@
 @if (Model != null)
 {
     <input type="hidden" id="typedata" value="@Model.TypeChart" />    
+    <input type="hidden" id="piedata" value="@Model.PieChart" />
 }
 <div class="row">
     <div class="col-md-12 col-xl-8">
@@ -19,6 +20,14 @@
                 <div class="card">
                     <div class="card-body">
                         <div id="typechart">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-xl-6 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="piechart">
                         </div>
                     </div>
                 </div>
