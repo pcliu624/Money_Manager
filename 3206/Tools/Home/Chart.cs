@@ -188,6 +188,19 @@ namespace _3206.Tools.Home
                 var personCount = plist.Length;
                 foreach (var person in plist)
                 {
+                    var a = group.Select(x => x.Cost).Sum();//total
+                    var b = group.Where(x => x.Payby == person).Select(x => x.Cost).Sum(); //paid
+                    var c = group.Where(x => x.Payby != person).ToList();
+                    if(c.Count > 0)
+                    {
+                        foreach(var p in c)
+                        {
+                            if (!p.Payfor.Contains(p.Payby))
+                            {
+                                totalAmount[p.Payby] -= p.Cost/personCount;
+                            }
+                        }
+                    }
                     if (totalAmount.ContainsKey(person))
                     {
                         totalAmount[person] += (group.Select(x => x.Cost).Sum() / personCount) - group.Where(x =>x.Payby == person).Select(x=>x.Cost).Sum();

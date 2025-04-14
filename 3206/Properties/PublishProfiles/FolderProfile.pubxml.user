@@ -5,7 +5,8 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\raymond\publish</_PublishTargetUrl>
-    <History>True|2024-02-20T00:47:58.9450416Z;</History>
+    <History>True|2025-04-14T20:16:41.4916084Z||;True|2024-02-19T19:47:58.9450416-05:00||;</History>
     <LastFailureDetails />
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
   </PropertyGroup>
 </Project>

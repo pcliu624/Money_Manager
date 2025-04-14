@@ -31,9 +31,11 @@ body {
 .daterange {
     font-family: "roboto", sans-serif;
     font-size: .9rem;
-    width: auto;
+    width: 100%;
+    max-width: 13rem; /* or whatever max you prefer */
+    min-width: 5rem;
     border-radius: .3rem;
-    padding: .4rem 1rem .4rem 1rem;
+    padding: .3rem 1rem .3rem 1rem;
     background: #cedeed;
     border: 0px;
 }
