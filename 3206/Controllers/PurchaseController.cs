@@ -42,8 +42,11 @@ namespace _3206.Controllers
                 var list =  _db.Purchases.AsQueryable();
                 if (filter.Date != null)
                 {
-                    var start = DateTime.Parse(filter.Date.Split('-')[0]);
-                    var end = DateTime.Parse(filter.Date.Split('-')[1]);
+                    string dateFormat = "MM/dd/yyyy";
+                    var culture = System.Globalization.CultureInfo.InvariantCulture;
+                    var dateParts = filter.Date.Split('-');
+                    var start = DateTime.ParseExact(dateParts[0].Trim(), dateFormat, culture);
+                    var end = DateTime.ParseExact(dateParts[1].Trim(), dateFormat, culture);
                     list = list.Where(x => x.Date >= start && x.Date <= end);
                 }
                 if (!string.IsNullOrEmpty(filter.Paidby))

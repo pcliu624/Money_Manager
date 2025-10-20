@@ -179,40 +179,52 @@ namespace _3206.Tools.Home
         }
         public async Task<List<ForeachPayViewModel>> GetEachPersonShouldPay(DateTime start, DateTime end)
         {
-            var resultList =new List<ForeachPayViewModel>();
-            var record = await _db.Purchases.Where(x => x.Date.Value >= start && x.Date.Value <= end).ToListAsync();
-            Dictionary<string, decimal> totalAmount = new Dictionary<string, decimal>();
-            foreach (var group in record.GroupBy(x => x.Payfor))
-            {
-                var plist = group.Key.Split(',');
-                var personCount = plist.Length;
-                foreach (var person in plist)
+            var resultList = new List<ForeachPayViewModel>();
+            try
+            {               
+                var record = await _db.Purchases.Where(x => x.Date >= start && x.Date <= end).ToListAsync();
+                Dictionary<string, decimal> totalAmount = new Dictionary<string, decimal>();
+                foreach (var group in record.GroupBy(x => x.Payfor))
                 {
-                    var a = group.Select(x => x.Cost).Sum();//total
-                    var b = group.Where(x => x.Payby == person).Select(x => x.Cost).Sum(); //paid
-                    var c = group.Where(x => x.Payby != person).ToList();
-                    if(c.Count > 0)
+                    var plist = group.Key.Split(',');
+                    var personCount = plist.Length;
+                    foreach (var person in plist)
                     {
-                        foreach(var p in c)
+                        var a = group.Select(x => x.Cost).Sum();//total
+                        var b = group.Where(x => x.Payby == person).Select(x => x.Cost).Sum(); //paid
+                        var c = group.Where(x => x.Payby != person).ToList();
+                        if (c.Count > 0)
                         {
-                            if (!p.Payfor.Contains(p.Payby))
+                            foreach (var p in c)
                             {
-                                totalAmount[p.Payby] -= p.Cost/personCount;
+                                if (!p.Payfor.Contains(p.Payby))
+                                {
+                                    if (!totalAmount.ContainsKey(p.Payby))                                   
+                                    {
+                                        totalAmount[p.Payby] =0;
+                                    }
+                                    totalAmount[p.Payby] -= p.Cost / personCount;
+                                }
                             }
                         }
+                        if (totalAmount.ContainsKey(person))
+                        {
+                            totalAmount[person] += (group.Select(x => x.Cost).Sum() / personCount) - group.Where(x => x.Payby == person).Select(x => x.Cost).Sum();
+                        }
+                        else
+                            totalAmount[person] = (group.Select(x => x.Cost).Sum() / personCount) - group.Where(x => x.Payby == person).Select(x => x.Cost).Sum();
                     }
-                    if (totalAmount.ContainsKey(person))
-                    {
-                        totalAmount[person] += (group.Select(x => x.Cost).Sum() / personCount) - group.Where(x =>x.Payby == person).Select(x=>x.Cost).Sum();
-                    }
-                    else
-                        totalAmount[person] = (group.Select(x => x.Cost).Sum() / personCount) - group.Where(x => x.Payby == person).Select(x => x.Cost).Sum();
+                }
+                foreach (var amount in totalAmount)
+                {
+                    resultList.Add(new ForeachPayViewModel { Person = amount.Key, Amount = Math.Round(amount.Value, 2, MidpointRounding.AwayFromZero).ToString() });
                 }
             }
-            foreach (var amount in totalAmount)
+            catch(Exception ex)
             {
-                resultList.Add(new ForeachPayViewModel { Person = amount.Key, Amount = Math.Round(amount.Value,2,MidpointRounding.AwayFromZero).ToString() });
+                Console.WriteLine(ex.Message);
             }
+            
             return resultList;
         }
     }
